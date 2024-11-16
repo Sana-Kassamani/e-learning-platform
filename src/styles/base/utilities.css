@@ -10,6 +10,10 @@ input {
   padding: 0px 5px;
   border-radius: 5px;
 }
+button {
+  padding: 10px 20px;
+  border-radius: 5px;
+}
 .flex {
   display: flex;
 }

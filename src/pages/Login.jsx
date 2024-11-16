@@ -72,7 +72,7 @@ const Login = () => {
                   const token = response.data.jwt;
                   localStorage.setItem("jwtToken", token);
                   console.log("Login successfu");
-                  navigate("/home");
+                  navigate("/student");
                 } else {
                   setError("Invalid credentials");
                 }

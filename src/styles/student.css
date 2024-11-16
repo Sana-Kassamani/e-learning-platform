@@ -1,0 +1,18 @@
+.courses-section {
+  padding: 20px;
+  margin-top: 50px;
+  gap: 20px;
+}
+.courses {
+  gap: 20px;
+  flex-wrap: wrap;
+}
+.courses > div {
+  border: 2px solid rgb(68, 133, 119);
+  border-radius: 5px;
+  padding: 20px;
+  gap: 10px;
+  max-width: 20vw;
+  flex-grow: 1;
+  min-width: 10vw;
+}
