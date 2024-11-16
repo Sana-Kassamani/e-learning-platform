@@ -40,3 +40,6 @@ button {
 .space-evenly {
   justify-content: space-evenly;
 }
+.justify-end {
+  justify-content: end;
+}

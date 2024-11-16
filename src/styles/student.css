@@ -16,3 +16,27 @@
   flex-grow: 1;
   min-width: 10vw;
 }
+
+.course-title {
+  padding: 10px 20px;
+  height: 10vh;
+  color: white;
+  gap: 10px;
+  background-color: rgba(68, 146, 136, 0.626);
+}
+.course-content {
+  margin-top: 50px;
+  gap: 30px;
+}
+.course-content > div {
+  width: 30vw;
+  padding: 20px;
+  border: 2px solid beige;
+  border-radius: 5px;
+  gap: 10px;
+}
+.anouncement {
+  border: 1px solid rgb(197, 189, 189);
+  border-radius: 5px;
+  padding: 10px;
+}
