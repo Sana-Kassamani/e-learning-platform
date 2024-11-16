@@ -6,6 +6,7 @@ import React, { useState, useEffect } from "react";
 
 const Header = () => {
   const [name, setName] = useState("");
+  const navigate = useNavigate();
   function getName() {
     const token = localStorage.getItem("jwtToken");
     const name = axios
@@ -39,7 +40,14 @@ const Header = () => {
   return (
     <header className="flex space-between">
       <h2>Hello, {name}</h2>
-      <button>Logout</button>
+      <button
+        onClick={() => {
+          localStorage.removeItem("jwtToken");
+          navigate("/");
+        }}
+      >
+        Logout
+      </button>
     </header>
   );
 };
