@@ -10,13 +10,15 @@ $user_id=verifyJWT($jwt_string);
 //get enrolled courses from db
 $courses =[
     [
+        "course_id"=>1,
         "name"=>"PHP",
         "instructor"=>"Taha Taha"
     ],
-    [        "name"=>"React",
+    [     "course_id"=>2,   
+        "name"=>"React",
         "instructor"=>"Taha Taha"
 ],
-    [
+    [ "course_id"=>3,
         "name"=>"UI/UX",
         "instructor"=>"Nour Mshawrab"
     ]
