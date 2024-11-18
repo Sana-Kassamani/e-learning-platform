@@ -27,13 +27,13 @@ if($result->num_rows != 0){
             "user_id"=> $user["user_id"],
             "user_type_id"=> $user["user_type_id"] //1 for admin, 2 for instructor, 3 for student
         ];
-        $jwt_string = createJWT($user_id,$user_type);
+        $jwt_string = createJWT($payload);
         http_response_code(200);
         // verify in db
         echo json_encode([
             "message"=>"Login Successful",
             "jwt"=> $jwt_string,
-            "user_type"=>$user_type
+            "user_type"=> $user["user_type_id"]
         ]);
 
     }
