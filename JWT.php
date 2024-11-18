@@ -1,10 +1,17 @@
 <?php
 
-function createJWT($user_id,$user_type){
-    return "JWTString";
+require "vendor/autoload.php";
+use Firebase\JWT\JWT;
 
+$secret_key="MySecretKey";
+
+function createJWT($payload){
+
+    $token= JWT::encode($payload,$secret_key,"HS256");
+    return $token;
 }
 function verifyJWT($jwtString){
-    $user_id =1;
-    return $user_id;
+    $key = new Key($secret_key,"HS256");
+    $payload=JWT::decode($jwtString,$key);
+    return $payload;
 }
