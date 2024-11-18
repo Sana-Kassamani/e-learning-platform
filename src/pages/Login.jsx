@@ -71,8 +71,13 @@ const Login = () => {
                 if (response.status === 200) {
                   const token = response.data.jwt;
                   localStorage.setItem("jwtToken", token);
-                  console.log("Login successfu");
-                  navigate("/student");
+                  console.log("Login successful");
+                  const result = response.data;
+                  if (result.user_type == 3) {
+                    navigate("/student");
+                  } else if (result.user_type == 2) {
+                    navigate("/instructor");
+                  }
                 } else {
                   setError("Invalid credentials");
                 }
