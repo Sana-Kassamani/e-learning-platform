@@ -14,6 +14,3 @@ $connection = new mysqli($host,$db_user,$pass,$db_name,$port);
 if($connection->connect_error){
     die("Connection failed: " . $connection->connect_error);
 }
-else{
-    echo "Connection Successful";
-}
