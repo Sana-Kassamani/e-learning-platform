@@ -9,7 +9,6 @@ import { request } from "../utils/request";
 
 const InstructorCourse = () => {
   const [error, setError] = useState("");
-  const [course, setCourse] = useState({});
   const [assignment, setAssignment] = useState({
     title: "",
     description: "",
@@ -18,12 +17,56 @@ const InstructorCourse = () => {
   const [announcement, setAnnouncement] = useState({
     content: "",
   });
-  useEffect(() => {}, []);
   return (
     <>
       <Course />
-      <section>
-        <div className="flex column add-assign ">
+      <section className="flex justify-center add-section">
+        <div className="flex column add-form ">
+          <input
+            type="text"
+            placeholder="Content of Announcement"
+            onChange={(e) => {
+              setAnnouncement((prev) => {
+                return {
+                  ...prev,
+                  content: e.target.value,
+                };
+              });
+            }}
+          />
+          {error && <p>{error}</p>}
+          <button
+            onClick={async () => {
+              if (!announcement.content) {
+                console.log("empty credentials");
+                setError("All fields are required");
+                return;
+              }
+              const urlParams = new URLSearchParams(window.location.search);
+              const courseId = urlParams.get("id");
+              const data = new FormData();
+              data.append("content", announcement.content);
+              data.append("course_id", courseId);
+              try {
+                const response = await request({
+                  body: data,
+                  method: "POST",
+                  route: "addAnnouncement",
+                });
+                if (response.status === 200) {
+                  console.log("Added Announcement");
+                }
+              } catch (error) {
+                setError(error.response.data.message);
+                console.log(error.response.data.message);
+              }
+            }}
+          >
+            Add Announcement
+          </button>
+        </div>
+
+        <div className="flex column add-form ">
           <input
             type="text"
             placeholder="Title of assignment"
@@ -38,7 +81,7 @@ const InstructorCourse = () => {
           />
           <input
             type="text"
-            placeholder="Title of assignment"
+            placeholder="Description of assignment"
             onChange={(e) => {
               setAssignment((prev) => {
                 return {
@@ -93,7 +136,7 @@ const InstructorCourse = () => {
               }
             }}
           >
-            Add
+            Add Assignment
           </button>
         </div>
       </section>

@@ -45,9 +45,14 @@
   padding: 10px;
 }
 
-.add-assign {
+.add-section {
+  gap: 30px;
+}
+.add-form {
+  border: 2px solid beige;
+  border-radius: 5px;
   margin-top: 20px;
   gap: 10px;
-  padding: 10px;
+  padding: 20px;
   width: 30vw;
 }
