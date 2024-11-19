@@ -19,7 +19,11 @@ const Courses = ({ courses }) => {
                 navigate(`/course?id=${c.course_id}`);
               }}
             >
-              <p>{c.name}</p>
+              <p>{c.title}</p>
+              <p>
+                {c.first_name} {c.last_name}
+              </p>
+              <p>{c.description}</p>
             </div>
           ))}
         </div>
