@@ -6,6 +6,7 @@ import AdminHome from "./pages/AdminHome";
 import InstructorCourse from "./pages/InstructorCourse";
 import { Routes, Route, useLocation } from "react-router-dom";
 import Course from "./pages/Course";
+import StudentCourse from "./pages/StudentCourse";
 
 function App() {
   return (
@@ -14,7 +15,7 @@ function App() {
       <Route path="/student" element={<StudentHome />} />
       <Route path="/instructor" element={<InstructorHome />} />
       <Route path="/admin" element={<AdminHome />} />
-      <Route path="/course" element={<Course />} />
+      <Route path="/course" element={<StudentCourse />} />
       <Route path="/instructor-course" element={<InstructorCourse />} />
     </Routes>
   );

@@ -5,9 +5,9 @@ import { useNavigate } from "react-router-dom";
 import React, { useState, useEffect } from "react";
 import Header from "../components/Header";
 
-const Course = () => {
-  const [assignments, setAssignments] = useState([]);
-  const [announcements, setAnnouncements] = useState([]);
+const Course = ({ assignments, announcements }) => {
+  //   const [assignments, setAssignments] = useState([]);
+  //   const [announcements, setAnnouncements] = useState([]);
   const [course, setCourse] = useState({});
 
   const getCourseContent = async () => {
@@ -20,25 +20,28 @@ const Course = () => {
       body: data,
       route: "getCourse",
     });
-    const responseAssign = await request({
-      method: "POST",
-      body: data,
-      route: "getAssignments",
-    });
-    const responseAnnoun = await request({
-      method: "POST",
-      body: data,
-      route: "getAnnouncements",
-    });
+    // const responseAssign = await request({
+    //   method: "POST",
+    //   body: data,
+    //   route: "getAssignments",
+    // });
+    // const responseAnnoun = await request({
+    //   method: "POST",
+    //   body: data,
+    //   route: "getAnnouncements",
+    // });
     responseCourse.data.course && setCourse(responseCourse.data.course);
-    responseAssign.data.assignments &&
-      setAssignments(responseAssign.data.assignments);
-    responseAnnoun.data.announcements &&
-      setAnnouncements(responseAnnoun.data.announcements);
+    // responseAssign.data.assignments &&
+    //   setAssignments(responseAssign.data.assignments);
+    // responseAnnoun.data.announcements &&
+    //   setAnnouncements(responseAnnoun.data.announcements);
   };
+  //   useEffect(() => {
+  //     getCourseContent();
+  //   }, [assignments, announcements]);
   useEffect(() => {
     getCourseContent();
-  }, [assignments, announcements]);
+  }, []);
   const navigate = useNavigate();
   return (
     <>

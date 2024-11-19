@@ -8,18 +8,45 @@ import Course from "./Course";
 import { request } from "../utils/request";
 
 const InstructorCourse = () => {
+  const [assignments, setAssignments] = useState([]);
+  const [announcements, setAnnouncements] = useState([]);
   const [error, setError] = useState("");
   const [assignment, setAssignment] = useState({
     title: "",
     description: "",
     due_date: null,
   });
+
   const [announcement, setAnnouncement] = useState({
     content: "",
   });
+
+  const getCourseContent = async () => {
+    const urlParams = new URLSearchParams(window.location.search);
+    const courseId = urlParams.get("id");
+    const data = new FormData();
+    data.append("course_id", courseId);
+    const responseAssign = await request({
+      method: "POST",
+      body: data,
+      route: "getAssignments",
+    });
+    const responseAnnoun = await request({
+      method: "POST",
+      body: data,
+      route: "getAnnouncements",
+    });
+    responseAssign.data.assignments &&
+      setAssignments(responseAssign.data.assignments);
+    responseAnnoun.data.announcements &&
+      setAnnouncements(responseAnnoun.data.announcements);
+  };
+  useEffect(() => {
+    getCourseContent();
+  }, []);
   return (
     <>
-      <Course />
+      <Course assignments={assignments} announcements={announcements} />
       <section className="flex justify-center add-section">
         <div className="flex column add-form ">
           <input
@@ -55,6 +82,7 @@ const InstructorCourse = () => {
                 });
                 if (response.status === 200) {
                   console.log("Added Announcement");
+                  getCourseContent();
                 }
               } catch (error) {
                 setError(error.response.data.message);
@@ -129,6 +157,7 @@ const InstructorCourse = () => {
                 });
                 if (response.status === 200) {
                   console.log("Added Assignment");
+                  getCourseContent();
                 }
               } catch (error) {
                 setError(error.response.data.message);

@@ -26,7 +26,7 @@ const StudentHome = () => {
     <>
       <Header />
       <h2>Enrolled Courses</h2>
-      <Courses courses={courses} />
+      <Courses courses={courses} isAdmin={false} />
     </>
   );
 };
