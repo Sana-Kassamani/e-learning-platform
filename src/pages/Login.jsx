@@ -1,5 +1,6 @@
 import "../styles/base/utilities.css";
 import "../styles/login.css";
+import { request } from "../utils/request";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import React, { useState, useEffect } from "react";
@@ -24,10 +25,7 @@ const Login = () => {
     const data = new FormData();
     data.append("username", loginForm.username);
     data.append("password", loginForm.password);
-    const response = axios.post(
-      "http://localhost/e-learning-platform/verifyLogin.php",
-      data
-    );
+    const response = request("verifyLogin", "POST", data);
     return response;
   }
 
@@ -62,34 +60,32 @@ const Login = () => {
           }}
         />
         <button
-          onClick={() => {
+          onClick={async () => {
             console.log("clicked");
             if (!loginForm.username || !loginForm.password) {
               console.log("empty credentials");
               setError("All fields are required");
               return;
             }
-            verifyLogin()
-              .then((response) => {
-                console.log(response);
-                const result = response.data;
-                if (response.status === 200) {
-                  const token = result.jwt;
-                  localStorage.setItem("token", token);
-                  navigate(userTypes[result.user_type]);
-                  //   if (result.user_type == 3) {
-                  //     navigate("/student");
-                  //   } else if (result.user_type == 2) {
-                  //     navigate("/instructor");
-                  //   } else if ({
-                  //   }
-                } else {
-                  setError(result.message);
-                }
-              })
-              .catch((error) => {
-                console.log("Server error on Login:", error);
+            // const response = verifyLogin();
+            const data = new FormData();
+            data.append("username", loginForm.username);
+            data.append("password", loginForm.password);
+            try {
+              const response = await request({
+                body: data,
+                method: "POST",
+                route: "verifyLogin",
               });
+              if (response.status === 200) {
+                const token = response.data.jwt;
+                localStorage.setItem("token", token);
+                navigate(userTypes[response.data.user_type]);
+              }
+            } catch (error) {
+              setError(error.response.data.message);
+              console.log(error.response.data.message);
+            }
           }}
         >
           Submit

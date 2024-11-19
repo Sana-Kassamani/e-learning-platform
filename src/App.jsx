@@ -2,6 +2,7 @@ import "./styles/App.css";
 import Login from "./pages/Login";
 import StudentHome from "./pages/StudentHome";
 import InstructorHome from "./pages/InstructorHome";
+import InstructorCourse from "./pages/InstructorCourse";
 import { Routes, Route, useLocation } from "react-router-dom";
 import Course from "./pages/Course";
 
