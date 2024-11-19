@@ -77,6 +77,7 @@ const AdminHome = () => {
               });
               if (response.status === 200) {
                 console.log("Added Course");
+                loadCourses();
               }
             } catch (error) {
               setError(error.response.data.message);
