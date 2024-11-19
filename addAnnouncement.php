@@ -7,25 +7,19 @@ $headers = getallheaders();
 $jwt = $headers["Authorization"];
 
 $payload=verifyJWT($jwt);
+$content=$_POST["content"];
 $course_id=$_POST["course_id"];
 
-$query = $connection->prepare("SELECT * FROM assignments WHERE course_id =?;");
-$query->bind_param("i", $course_id);
+$query = $connection->prepare("INSERT INTO announcements (content, course_id) VALUES (?,?);");
+
+$query->bind_param("si", $content,$course_id);
 $query->execute();
-$result = $query->get_result();
 
-if($result->num_rows != 0) {
-    $assignments = [];
-
-    while($assign = $result->fetch_assoc())
-        {
-            $assignments[]=$assign;
-        }
-        
+if($query->affected_rows == 1) {
+    
     http_response_code(200);
     echo json_encode([
-    "message" => "Assignmnets retrieved successfully",
-    "assignments"=>$assignments
+    "message" => "Announcement added successfully",
     ]);
 }
     
@@ -33,7 +27,7 @@ else {
         http_response_code(404);
     
         echo json_encode([
-        "message" => "Assignments not found"
+        "message" => "Announcement addition failed"
         ]);
     }
 

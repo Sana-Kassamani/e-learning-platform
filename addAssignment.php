@@ -21,7 +21,7 @@ if($query->affected_rows == 1) {
     
     http_response_code(200);
     echo json_encode([
-    "message" => "Assignmnets added successfully",
+    "message" => "Assignmnet added successfully",
     ]);
 }
     
