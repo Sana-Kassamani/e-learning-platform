@@ -60,7 +60,6 @@ const Login = () => {
               setError("All fields are required");
               return;
             }
-            // const response = verifyLogin();
             const data = new FormData();
             data.append("username", loginForm.username);
             data.append("password", loginForm.password);
