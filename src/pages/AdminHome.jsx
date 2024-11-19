@@ -24,6 +24,17 @@ const AdminHome = () => {
     setCourses(response.data.courses);
   };
 
+  const deleteCourse = async (course_id) => {
+    const data = new FormData();
+    data.append("course_id", course_id);
+    const response = await request({
+      route: "deleteCourse",
+      method: "POST",
+      body: data,
+    });
+    console.log(response.data.message);
+    loadCourses();
+  };
   useEffect(() => {
     loadCourses();
   }, []);
@@ -31,7 +42,7 @@ const AdminHome = () => {
     <>
       <Header />
       <h2>All Courses</h2>
-      <Courses courses={courses} />
+      <Courses courses={courses} isAdmin={true} deleteCourse={deleteCourse} />
       <div className="flex column add-form ">
         <input
           type="text"

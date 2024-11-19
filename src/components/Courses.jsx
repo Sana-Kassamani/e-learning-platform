@@ -4,7 +4,7 @@ import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import React, { useState, useEffect } from "react";
 
-const Courses = ({ courses }) => {
+const Courses = ({ courses, isAdmin, deleteCourse }) => {
   const navigate = useNavigate();
 
   return (
@@ -12,18 +12,31 @@ const Courses = ({ courses }) => {
       <div className="courses-section flex column">
         <div className="flex  justify-center courses">
           {courses?.map((c) => (
-            <div
-              key={c.course_id}
-              className="flex column justify-center"
-              onClick={() => {
-                navigate(`/course?id=${c.course_id}`);
-              }}
-            >
+            <div key={c.course_id} className="flex column justify-center">
+              <a
+                onClick={() => {
+                  navigate(`/course?id=${c.course_id}`);
+                }}
+              >
+                More
+              </a>
               <p>{c.title}</p>
               <p>
                 {c.first_name} {c.last_name}
               </p>
               <p>{c.description}</p>
+              {isAdmin && (
+                <>
+                  <button
+                    onClick={() => {
+                      console.log(`delete clicked on ${c.course_id} `);
+                      deleteCourse(c.course_id);
+                    }}
+                  >
+                    Delete
+                  </button>
+                </>
+              )}
             </div>
           ))}
         </div>
