@@ -19,10 +19,14 @@
 
 .course-title {
   padding: 10px 20px;
-  height: 10vh;
+  height: 20vh;
   color: white;
   gap: 10px;
   background-color: rgba(68, 146, 136, 0.626);
+}
+.course-title h6 {
+  font-weight: 300;
+  font-size: medium;
 }
 .course-content {
   margin-top: 50px;

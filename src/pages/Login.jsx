@@ -21,13 +21,6 @@ const Login = () => {
   }, [loginForm]);
 
   const navigate = useNavigate();
-  function verifyLogin() {
-    const data = new FormData();
-    data.append("username", loginForm.username);
-    data.append("password", loginForm.password);
-    const response = request("verifyLogin", "POST", data);
-    return response;
-  }
 
   return (
     <section className=" login-section flex  justify-center align-center">
