@@ -5,12 +5,16 @@ import { useNavigate } from "react-router-dom";
 import React, { useState, useEffect } from "react";
 
 const Login = () => {
+  const userTypes = [null, "/admin", "/instructor", "/student"];
   const [loginForm, setLoginForm] = useState({
     username: "",
     password: "",
   });
 
   const [error, setError] = useState("");
+  useEffect(() => {
+    localStorage.removeItem("token");
+  }, []);
   useEffect(() => {
     console.log(loginForm);
   }, [loginForm]);
@@ -68,18 +72,19 @@ const Login = () => {
             verifyLogin()
               .then((response) => {
                 console.log(response);
+                const result = response.data;
                 if (response.status === 200) {
-                  const token = response.data.jwt;
-                  localStorage.setItem("jwtToken", token);
-                  console.log("Login successful");
-                  const result = response.data;
-                  if (result.user_type == 3) {
-                    navigate("/student");
-                  } else if (result.user_type == 2) {
-                    navigate("/instructor");
-                  }
+                  const token = result.jwt;
+                  localStorage.setItem("token", token);
+                  navigate(userTypes[result.user_type]);
+                  //   if (result.user_type == 3) {
+                  //     navigate("/student");
+                  //   } else if (result.user_type == 2) {
+                  //     navigate("/instructor");
+                  //   } else if ({
+                  //   }
                 } else {
-                  setError("Invalid credentials");
+                  setError(result.message);
                 }
               })
               .catch((error) => {
