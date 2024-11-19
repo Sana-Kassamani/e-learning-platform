@@ -10,9 +10,8 @@ $payload=verifyJWT($jwt);
 
 $id = $payload->user_id;
 
-$query = $connection->prepare("SELECT c.*,u.first_name,u.last_name FROM courses as c INNER JOIN enrollments as e on c.course_id=e.course_id 
-                                INNER JOIN users as u on c.instructor_id=u.user_id where e.user_id=?;");
-$query->bind_param("i", $id);
+$query = $connection->prepare("SELECT * FROM courses");
+
 $query->execute();
 
 $result = $query->get_result();
@@ -27,7 +26,7 @@ if($result->num_rows != 0) {
 
     http_response_code(200);
     echo json_encode([
-        "message"=>"Retrieved enrolled courses successfully",
+        "message"=>"Retrieved all courses successfully",
         "courses"=>$courses
     ]);
 
@@ -36,7 +35,7 @@ else {
     http_response_code(404);
 
     echo json_encode([
-    "message" => "Courses of student not found"
+    "message" => "All Courses not found"
     ]);
 }
 
