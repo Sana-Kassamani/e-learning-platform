@@ -1,6 +1,6 @@
 import "../styles/base/utilities.css";
 import "../styles/student.css";
-import axios from "axios";
+import { request } from "../utils/request";
 import Header from "../components/Header";
 import InstructorCourses from "../components/InstructorCourses";
 import { useNavigate } from "react-router-dom";
@@ -10,15 +10,9 @@ const InstructorHome = () => {
   const [courses, setCourses] = useState([]);
 
   const loadCourses = async () => {
-    const token = localStorage.getItem("jwtToken");
-    const response = await axios.get(
-      "http://localhost/e-learning-platform/getInstructorCourses.php",
-      {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      }
-    );
+    const response = await request({
+      route: "getInstructorCourses",
+    });
     console.log(response.data);
 
     setCourses(response.data.courses);
