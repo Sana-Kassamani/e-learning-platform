@@ -4,64 +4,97 @@ import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import React, { useState, useEffect } from "react";
 import Header from "../components/Header";
+import Course from "./Course";
+import { request } from "../utils/request";
 
 const InstructorCourse = () => {
+  const [error, setError] = useState("");
   const [course, setCourse] = useState({});
-
-  const getCourse = async () => {
-    const token = localStorage.getItem("jwtToken");
-    const urlParams = new URLSearchParams(window.location.search);
-    const courseId = urlParams.get("id");
-    const data = new FormData();
-    data.append("course_id", courseId);
-    const response = await axios.post(
-      "http://localhost/e-learning-platform/getCourse.php",
-      data,
-      {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      }
-    );
-
-    if (response.data) {
-      console.log(response.data.course.announcements);
-    }
-
-    if (response.data.course) {
-      setCourse(response.data.course);
-    }
-  };
-  useEffect(() => {
-    getCourse();
-  }, []);
-  const navigate = useNavigate();
+  const [assignment, setAssignment] = useState({
+    title: "",
+    description: "",
+    due_date: null,
+  });
+  const [announcement, setAnnouncement] = useState({
+    content: "",
+  });
+  useEffect(() => {}, []);
   return (
     <>
-      <Header />
+      <Course />
       <section>
-        <div className="course-title flex column justify-end">
-          <h1>{course.name}</h1>
-          <h4>{course.instructor}</h4>
-        </div>
-        <div className="flex justify-center course-content ">
-          <div className="flex column ">
-            <h2>Anouncements</h2>
-            {course.announcements?.map((a, index) => (
-              <div className="anouncement" key={index}>
-                <p>{a.content}</p>
-              </div>
-            ))}
-          </div>
-          <div className="flex column ">
-            <h2>Assignments</h2>
-            {course.assignments?.map((a, index) => (
-              <div className="anouncement" key={index}>
-                <p>{a.title}</p>
-                <p>{a.due_date}</p>
-              </div>
-            ))}
-          </div>
+        <div className="flex column add-assign ">
+          <input
+            type="text"
+            placeholder="Title of assignment"
+            onChange={(e) => {
+              setAssignment((prev) => {
+                return {
+                  ...prev,
+                  title: e.target.value,
+                };
+              });
+            }}
+          />
+          <input
+            type="text"
+            placeholder="Title of assignment"
+            onChange={(e) => {
+              setAssignment((prev) => {
+                return {
+                  ...prev,
+                  description: e.target.value,
+                };
+              });
+            }}
+          />
+          <input
+            type="datetime-local"
+            onChange={(e) => {
+              setAssignment((prev) => {
+                return {
+                  ...prev,
+                  due_date: e.target.value,
+                };
+              });
+            }}
+          />
+          {error && <p>{error}</p>}
+          <button
+            onClick={async () => {
+              if (
+                !assignment.title ||
+                !assignment.description ||
+                !assignment.due_date
+              ) {
+                console.log("empty credentials");
+                setError("All fields are required");
+                return;
+              }
+              const urlParams = new URLSearchParams(window.location.search);
+              const courseId = urlParams.get("id");
+              const data = new FormData();
+              data.append("title", assignment.title);
+              data.append("description", assignment.description);
+              data.append("due_date", assignment.due_date);
+              data.append("course_id", courseId);
+              try {
+                const response = await request({
+                  body: data,
+                  method: "POST",
+                  route: "addAssignment",
+                });
+                if (response.status === 200) {
+                  console.log("Added Assignment");
+                }
+              } catch (error) {
+                setError(error.response.data.message);
+                console.log(error.response.data.message);
+              }
+            }}
+          >
+            Add
+          </button>
         </div>
       </section>
     </>
