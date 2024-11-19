@@ -36,29 +36,7 @@ else {
     http_response_code(404);
 
     echo json_encode([
-    "message" => "Courses of user not found"
+    "message" => "Courses of student not found"
     ]);
 }
 
-
-// //get enrolled courses from db
-// $courses =[
-//     [
-//         "course_id"=>1,
-//         "name"=>"PHP",
-//         "instructor"=>"Taha Taha"
-//     ],
-//     [     "course_id"=>2,   
-//         "name"=>"React",
-//         "instructor"=>"Taha Taha"
-// ],
-//     [ "course_id"=>3,
-//         "name"=>"UI/UX",
-//         "instructor"=>"Nour Mshawrab"
-//     ]
-
-// ];
-
-// echo json_encode([
-//     "courses"=>$courses
-// ]);
