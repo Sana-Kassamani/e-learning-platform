@@ -11,7 +11,6 @@ const Course = () => {
   const [course, setCourse] = useState({});
 
   const getCourseContent = async () => {
-    // const token = localStorage.getItem("jwtToken");
     const urlParams = new URLSearchParams(window.location.search);
     const courseId = urlParams.get("id");
     const data = new FormData();
@@ -39,7 +38,7 @@ const Course = () => {
   };
   useEffect(() => {
     getCourseContent();
-  }, []);
+  }, [assignments, announcements]);
   const navigate = useNavigate();
   return (
     <>
