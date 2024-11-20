@@ -13,18 +13,18 @@ const Courses = ({ courses, isAdmin, deleteCourse, setEditCourse }) => {
         <div className="flex  justify-center courses">
           {courses?.map((c) => (
             <div key={c.course_id} className="flex column justify-center">
-              <a
-                onClick={() => {
-                  navigate(`/course?id=${c.course_id}`);
-                }}
-              >
-                More
-              </a>
               <p>{c.title}</p>
               <p>
                 {c.first_name} {c.last_name}
               </p>
               <p>{c.description}</p>
+              <button
+                onClick={() => {
+                  navigate(`/course?id=${c.course_id}`);
+                }}
+              >
+                More
+              </button>
               {isAdmin && (
                 <>
                   <button
