@@ -1,14 +1,20 @@
 <?php
 include "connection.php";
 
-$username=$_POST['username'];
-$password=$_POST['password'];
-$first_name=$_POST['first_name'];
-$last_name=$_POST['last_name'];
-$user_type_id = $_POST['user_type_id'];
+$username=$_POST['username']??null;
+$password=$_POST['password']??null;
+$first_name=$_POST['first_name']??null;
+$last_name=$_POST['last_name']??null;
 
-
-$checkUsername=$connection->prepare("SELECT * from users WHERE username=?");
+if(!$username || !$password || !$first_name || !$last_name || !$user_type_id)
+{
+  http_response_code(400);
+    echo json_encode([
+    "message"=> "All fields are required"
+  ]);
+}
+else {
+  $checkUsername=$connection->prepare("SELECT * from users WHERE username=?");
 $checkUsername->bind_param("s",$username);
 
 $checkUsername->execute();
@@ -31,10 +37,13 @@ else{
 
   if($result!=0)
   {
+    $inserted_id = $connection->insert_id;
+    $result = $connection->query("SELECT * FROM users WHERE user_id = $inserted_id");
+    $inserted_row = $result->fetch_assoc();
     http_response_code(200);
     echo json_encode([
       "message"=>"Created",
-      "user_id"=>  $connection->insert_id
+      "inserted_row"=>  $inserted_row
   ]);
   }else
   {
@@ -46,3 +55,5 @@ else{
 
 }
 
+
+}
