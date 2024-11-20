@@ -4,7 +4,7 @@ import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import React, { useState, useEffect } from "react";
 
-const Courses = ({ courses, isAdmin, deleteCourse }) => {
+const Courses = ({ courses, isAdmin, deleteCourse, setEditCourse }) => {
   const navigate = useNavigate();
 
   return (
@@ -34,6 +34,18 @@ const Courses = ({ courses, isAdmin, deleteCourse }) => {
                     }}
                   >
                     Delete
+                  </button>
+                  <button
+                    onClick={() => {
+                      console.log(`edit clicked on ${c.course_id} `);
+                      setEditCourse({
+                        course_id: c.course_id,
+                        title: c.title,
+                        description: c.description,
+                      });
+                    }}
+                  >
+                    Edit
                   </button>
                 </>
               )}

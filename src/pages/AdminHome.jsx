@@ -8,12 +8,14 @@ import { request } from "../utils/request";
 import React, { useState, useEffect } from "react";
 
 const AdminHome = () => {
-  const { error, setError } = useState("");
+  const [addError, setAddError] = useState("");
+  const [editError, setEditError] = useState("");
   const [courses, setCourses] = useState([]);
   const [courseForm, setCourseForm] = useState({
     title: "",
     description: "",
   });
+  const [edittedCourse, setEditCourse] = useState(false);
 
   const loadCourses = async () => {
     const response = await request({
@@ -36,13 +38,26 @@ const AdminHome = () => {
     loadCourses();
   };
   useEffect(() => {
+    if (edittedCourse) {
+      setCourseForm({
+        title: edittedCourse.title || "",
+        description: edittedCourse.description || "",
+      });
+    }
+  }, [edittedCourse]);
+  useEffect(() => {
     loadCourses();
   }, []);
   return (
     <>
       <Header />
       <h2>All Courses</h2>
-      <Courses courses={courses} isAdmin={true} deleteCourse={deleteCourse} />
+      <Courses
+        courses={courses}
+        isAdmin={true}
+        deleteCourse={deleteCourse}
+        setEditCourse={setEditCourse}
+      />
       <div className="flex column add-form ">
         <input
           type="text"
@@ -69,12 +84,12 @@ const AdminHome = () => {
           }}
         />
 
-        {error && <p>{error}</p>}
+        {addError && <p>{addError}</p>}
         <button
           onClick={async () => {
             if (!courseForm.title || !courseForm.description) {
               console.log("empty credentials");
-              setError("All fields are required");
+              setAddError("All fields are required");
               return;
             }
             const data = new FormData();
@@ -88,10 +103,12 @@ const AdminHome = () => {
               });
               if (response.status === 200) {
                 console.log("Added Course");
-                loadCourses();
+                setCourses((prev) => {
+                  return [...prev, response.data.inserted_row];
+                });
               }
             } catch (error) {
-              setError(error.response.data.message);
+              setAddError(error.response.data.message);
               console.log(error.response.data.message);
             }
           }}
@@ -99,6 +116,71 @@ const AdminHome = () => {
           Add Course
         </button>
       </div>
+      {edittedCourse && (
+        <div className="flex column add-form ">
+          <input
+            type="text"
+            placeholder="Title of course"
+            defaultValue={edittedCourse.title}
+            onChange={(e) => {
+              setCourseForm((prev) => {
+                return {
+                  ...prev,
+                  title: e.target.value,
+                };
+              });
+            }}
+          />
+          <input
+            type="text"
+            placeholder="Description of course"
+            defaultValue={edittedCourse.description}
+            onChange={(e) => {
+              setCourseForm((prev) => {
+                return {
+                  ...prev,
+                  description: e.target.value,
+                };
+              });
+            }}
+          />
+
+          {editError && <p>{editError}</p>}
+
+          <button
+            onClick={async () => {
+              console.log(edittedCourse);
+              if (!courseForm.title || !courseForm.description) {
+                console.log("empty credentials");
+                setEditError("All fields are required");
+                return;
+              }
+              const data = new FormData();
+              data.append("title", courseForm.title);
+              data.append("description", courseForm.description);
+              console.log(edittedCourse.course_id);
+              data.append("course_id", edittedCourse.course_id);
+              try {
+                const response = await request({
+                  body: data,
+                  method: "POST",
+                  route: "editCourse",
+                });
+                if (response.status === 200) {
+                  console.log("Editted Course");
+                  loadCourses();
+                  setEditCourse(false);
+                }
+              } catch (error) {
+                setEditError(error.response.data.message);
+                console.log(error.response.data.message);
+              }
+            }}
+          >
+            Edit Course
+          </button>
+        </div>
+      )}
     </>
   );
 };
