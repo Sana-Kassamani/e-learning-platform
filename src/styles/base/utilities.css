@@ -43,3 +43,9 @@ button {
 .justify-end {
   justify-content: end;
 }
+.gap10 {
+  gap: 10px;
+}
+.gap {
+  gap: 20px;
+}

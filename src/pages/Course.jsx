@@ -5,7 +5,11 @@ import { useNavigate } from "react-router-dom";
 import React, { useState, useEffect } from "react";
 import Header from "../components/Header";
 
-const Course = ({ assignments, announcements }) => {
+const Course = ({
+  assignments,
+
+  announcements,
+}) => {
   //   const [assignments, setAssignments] = useState([]);
   //   const [announcements, setAnnouncements] = useState([]);
   const [course, setCourse] = useState({});

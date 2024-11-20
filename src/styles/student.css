@@ -1,4 +1,5 @@
-.courses-section {
+.courses-section,
+.card-section {
   padding: 20px;
   margin-top: 50px;
   gap: 20px;
@@ -32,7 +33,8 @@
   margin-top: 50px;
   gap: 30px;
 }
-.course-content > div {
+.course-content > div,
+.card {
   width: 30vw;
   padding: 20px;
   border: 2px solid beige;
@@ -55,4 +57,8 @@
   gap: 10px;
   padding: 20px;
   width: 30vw;
+}
+
+.tabs {
+  gap: 10px;
 }
