@@ -2,21 +2,20 @@ import "../styles/base/utilities.css";
 import "../styles/student.css";
 import axios from "axios";
 import Header from "../components/Header";
-import Courses from "../components/Courses";
+import CoursesAdmin from "../components/CoursesAdmin";
+import InstructorsAdmin from "../components/InstructorsAdmin";
 import { useNavigate } from "react-router-dom";
 import { request } from "../utils/request";
 import React, { useState, useEffect } from "react";
 
+const options = {
+  1: "Courses",
+  2: "Instructors",
+  3: "Students",
+};
 const AdminHome = () => {
-  const [addError, setAddError] = useState("");
-  const [editError, setEditError] = useState("");
+  const [option, setOption] = useState("");
   const [courses, setCourses] = useState([]);
-  const [courseForm, setCourseForm] = useState({
-    title: "",
-    description: "",
-  });
-  const [edittedCourse, setEditCourse] = useState(false);
-
   const loadCourses = async () => {
     const response = await request({
       route: "getAllCourses",
@@ -25,34 +24,41 @@ const AdminHome = () => {
 
     setCourses(response.data.courses);
   };
-
-  const deleteCourse = async (course_id) => {
-    const data = new FormData();
-    data.append("course_id", course_id);
-    const response = await request({
-      route: "deleteCourse",
-      method: "POST",
-      body: data,
-    });
-    console.log(response.data.message);
-    loadCourses();
-  };
-  useEffect(() => {
-    if (edittedCourse) {
-      setCourseForm({
-        title: edittedCourse.title || "",
-        description: edittedCourse.description || "",
-      });
-    }
-  }, [edittedCourse]);
   useEffect(() => {
     loadCourses();
   }, []);
   return (
     <>
       <Header />
-      <h2>All Courses</h2>
-      <Courses
+      <div className="flex align-center tabs">
+        <button
+          onClick={() => {
+            setOption(options[1]);
+          }}
+        >
+          Show Courses
+        </button>
+        <button
+          onClick={() => {
+            setOption(options[2]);
+          }}
+        >
+          Show Instructors
+        </button>
+        <button
+          onClick={() => {
+            setOption(options[3]);
+          }}
+        >
+          Show Students
+        </button>
+      </div>
+
+      {option === options[1] && (
+        <CoursesAdmin courses={courses} setCourses={setCourses} />
+      )}
+      {option === options[2] && <InstructorsAdmin courses={courses} />}
+      {/* <Courses
         courses={courses}
         isAdmin={true}
         deleteCourse={deleteCourse}
@@ -168,7 +174,19 @@ const AdminHome = () => {
                 });
                 if (response.status === 200) {
                   console.log("Editted Course");
-                  loadCourses();
+                  setCourses((prev) => {
+                    return prev.map((c) => {
+                      if (c.course_id === edittedCourse.course_id) {
+                        return {
+                          ...c,
+                          title: courseForm.title,
+                          description: courseForm.description,
+                        };
+                      } else {
+                        return c;
+                      }
+                    });
+                  });
                   setEditCourse(false);
                 }
               } catch (error) {
@@ -180,7 +198,7 @@ const AdminHome = () => {
             Edit Course
           </button>
         </div>
-      )}
+      )} */}
     </>
   );
 };
