@@ -16,10 +16,13 @@ $query->bind_param("ss", $title,$description);
 $query->execute();
 
 if($query->affected_rows == 1) {
-    
+    $inserted_id = $connection->insert_id;
+    $result = $connection->query("SELECT * FROM courses WHERE course_id = $inserted_id");
+    $inserted_row = $result->fetch_assoc();
     http_response_code(200);
     echo json_encode([
     "message" => "Course added successfully",
+    "inserted_row"=>$inserted_row
     ]);
 }
     
