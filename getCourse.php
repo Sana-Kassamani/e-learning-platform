@@ -10,11 +10,15 @@ $jwt = $headers["Authorization"];
     $course_id=$_POST["course_id"];
     
     $query = $connection->prepare("SELECT c.*, u.first_name,u.last_name FROM courses as c 
-                                    INNER JOIN users as u on c.instructor_id=u.user_id WHERE c.course_id=?;");
+                                    LEFT JOIN users as u on c.instructor_id=u.user_id WHERE c.course_id=?;");
     $query->bind_param("i", $course_id);
     $query->execute();
     $result = $query->get_result();
-
+echo json_encode(
+    [
+        "message"=> $result
+    ]
+    );
 if($result->num_rows != 0) {
 
     $course = $result->fetch_assoc();

@@ -11,10 +11,9 @@ $course_id=$_POST["course_id"];
 
 $query = $connection->prepare("SELECT * FROM assignments WHERE course_id =?;");
 $query->bind_param("i", $course_id);
-$query->execute();
-$result = $query->get_result();
 
-if($result->num_rows != 0) {
+if($query->execute()) {
+    $result = $query->get_result();
     $assignments = [];
 
     while($assign = $result->fetch_assoc())

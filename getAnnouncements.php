@@ -11,10 +11,11 @@ $jwt = $headers["Authorization"];
     
     $query = $connection->prepare("SELECT * FROM announcements WHERE course_id =?;");
     $query->bind_param("i", $course_id);
-    $query->execute();
-    $result = $query->get_result();
+    
+   
 
-if($result->num_rows != 0) {
+if($query->execute()) {
+    $result = $query->get_result();
     $announcements = [];
 
     while($announ = $result->fetch_assoc())
