@@ -8,14 +8,15 @@ import React, { useState, useEffect } from "react";
 
 const AssignInstructor = ({ instructors, courses }) => {
   const [error, setError] = useState("");
-  const [form, setForm] = useState({
-    course_id: null,
-    instructor_id: null,
-  });
 
   const [nonAssignedCourses, setNonAssignedCourses] = useState(
     courses.filter((c) => c.instructor_id === null)
   );
+  const [form, setForm] = useState({
+    course_id: nonAssignedCourses[0]?.course_id,
+    instructor_id: instructors[0]?.user_id,
+  });
+
   //   useEffect(() => {
   //     loadInstructors();
   //   }, []);
@@ -26,7 +27,6 @@ const AssignInstructor = ({ instructors, courses }) => {
         <label>Choose an Instructor:</label>
         <select
           name="Instructors"
-          defaultValue="instructor"
           onChange={(e) => {
             setForm((prev) => {
               return {
@@ -46,7 +46,6 @@ const AssignInstructor = ({ instructors, courses }) => {
         <label>Choose an Instructor:</label>
         <select
           name="Courses"
-          defaultValue="course"
           onChange={(e) => {
             setForm((prev) => {
               return {
@@ -62,8 +61,47 @@ const AssignInstructor = ({ instructors, courses }) => {
             </option>
           ))}
         </select>
+
+        {console.log("Form is ", form)}
+        <button
+          onClick={async () => {
+            if (!form.course_id || !form.instructor_id) {
+              setError("All Fields are required");
+              return;
+            }
+            const data = new FormData();
+            data.append("course_id", form.course_id);
+            data.append("instructor_id", form.instructor_id);
+
+            try {
+              const response = await request({
+                body: data,
+                method: "POST",
+                route: "AssignInstructor",
+              });
+              if (response.status === 200) {
+                console.log("Assigned Instructor");
+                setNonAssignedCourses(
+                  nonAssignedCourses.filter(
+                    (c) => c.course_id != form.course_id
+                  )
+                );
+                setForm({
+                  course_id: null,
+                  instructor_id: null,
+                });
+              }
+            } catch (error) {
+              setError(error.response.data.message);
+              console.log(error.response.data.message);
+            }
+          }}
+        >
+          Assign
+        </button>
+
+        {error && <p>{error}</p>}
       </div>
-      {console.log(form)}
     </>
   );
 };
