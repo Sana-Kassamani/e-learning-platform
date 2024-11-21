@@ -82,7 +82,7 @@ const AssignInstructor = ({ instructors, courses }) => {
               if (response.status === 200) {
                 console.log("Assigned Instructor");
                 setNonAssignedCourses(
-                  nonAssignedCourses.filter(
+                  nonAssignedCourses?.filter(
                     (c) => c.course_id != form.course_id
                   )
                 );
