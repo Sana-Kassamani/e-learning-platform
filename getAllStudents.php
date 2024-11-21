@@ -27,7 +27,7 @@ if($result->num_rows != 0) {
 
     http_response_code(200);
     echo json_encode([
-        "message"=>"Retrieved all courses successfully",
+        "message"=>"Retrieved all students successfully",
         "students"=>$students
     ]);
 
@@ -36,7 +36,7 @@ else {
     http_response_code(404);
 
     echo json_encode([
-    "message" => "All Courses not found"
+    "message" => "All Students not found"
     ]);
 }
 
