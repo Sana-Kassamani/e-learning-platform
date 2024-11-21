@@ -5,15 +5,8 @@ import { useNavigate } from "react-router-dom";
 import React, { useState, useEffect } from "react";
 import Header from "../components/Header";
 
-const Course = ({
-  assignments,
-
-  announcements,
-}) => {
-  //   const [assignments, setAssignments] = useState([]);
-  //   const [announcements, setAnnouncements] = useState([]);
+const Course = ({ assignments, announcements }) => {
   const [course, setCourse] = useState({});
-
   const getCourseContent = async () => {
     const urlParams = new URLSearchParams(window.location.search);
     const courseId = urlParams.get("id");
@@ -24,25 +17,8 @@ const Course = ({
       body: data,
       route: "getCourse",
     });
-    // const responseAssign = await request({
-    //   method: "POST",
-    //   body: data,
-    //   route: "getAssignments",
-    // });
-    // const responseAnnoun = await request({
-    //   method: "POST",
-    //   body: data,
-    //   route: "getAnnouncements",
-    // });
     responseCourse.data.course && setCourse(responseCourse.data.course);
-    // responseAssign.data.assignments &&
-    //   setAssignments(responseAssign.data.assignments);
-    // responseAnnoun.data.announcements &&
-    //   setAnnouncements(responseAnnoun.data.announcements);
   };
-  //   useEffect(() => {
-  //     getCourseContent();
-  //   }, [assignments, announcements]);
   useEffect(() => {
     getCourseContent();
   }, []);
@@ -73,6 +49,14 @@ const Course = ({
               <div className="anouncement" key={index}>
                 <p>{a.title}</p>
                 <p>{a.due_date}</p>
+                <button
+                  onClick={() => {
+                    localStorage.setItem("assignment", JSON.stringify(a));
+                    navigate("/assignment");
+                  }}
+                >
+                  View Instructions
+                </button>
               </div>
             ))}
           </div>
