@@ -5,9 +5,12 @@ import { useNavigate } from "react-router-dom";
 import React, { useState, useEffect } from "react";
 import Header from "../components/Header";
 import Course from "./Course";
+import Invitation from "../components/Invitation";
 import { request } from "../utils/request";
 
 const InstructorCourse = () => {
+  const urlParams = new URLSearchParams(window.location.search);
+  const courseId = urlParams.get("id");
   const [assignments, setAssignments] = useState([]);
   const [announcements, setAnnouncements] = useState([]);
   const [error, setError] = useState("");
@@ -169,6 +172,7 @@ const InstructorCourse = () => {
           </button>
         </div>
       </section>
+      <Invitation course_id={courseId} />
     </>
   );
 };

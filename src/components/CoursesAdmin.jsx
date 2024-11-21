@@ -15,15 +15,6 @@ const CoursesAdmin = ({ courses, setCourses }) => {
   });
   const [edittedCourse, setEditCourse] = useState(false);
 
-  //   const loadCourses = async () => {
-  //     const response = await request({
-  //       route: "getAllCourses",
-  //     });
-  //     console.log(response.data);
-
-  //     setCourses(response.data.courses);
-  //   };
-
   const deleteCourse = async (course_id) => {
     const data = new FormData();
     data.append("course_id", course_id);
