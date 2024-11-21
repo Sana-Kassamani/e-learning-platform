@@ -7,6 +7,7 @@ import InstructorsAdmin from "../components/InstructorsAdmin";
 import { useNavigate } from "react-router-dom";
 import { request } from "../utils/request";
 import React, { useState, useEffect } from "react";
+import StudentsAdmin from "../components/StudentsAdmin";
 
 const options = {
   1: "Courses",
@@ -58,6 +59,7 @@ const AdminHome = () => {
         <CoursesAdmin courses={courses} setCourses={setCourses} />
       )}
       {option === options[2] && <InstructorsAdmin courses={courses} />}
+      {option === options[3] && <StudentsAdmin />}
       {/* <Courses
         courses={courses}
         isAdmin={true}
