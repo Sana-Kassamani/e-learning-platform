@@ -11,7 +11,7 @@ $payload=verifyJWT($jwt);
 $id = $payload->user_id;
 
 $user_type_id=2;
-$query = $connection->prepare("SELECT user_id, first_name,last_name FROM users where user_type_id=?");
+$query = $connection->prepare("SELECT user_id, first_name,last_name,banned FROM users where user_type_id=?");
 $query->bind_param("i",$user_type_id);
 
 $query->execute();
