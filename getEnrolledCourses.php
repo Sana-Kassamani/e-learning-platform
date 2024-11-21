@@ -11,7 +11,7 @@ $payload=verifyJWT($jwt);
 $id = $payload->user_id;
 
 $query = $connection->prepare("SELECT c.*,u.first_name,u.last_name FROM courses as c INNER JOIN enrollments as e on c.course_id=e.course_id 
-                                INNER JOIN users as u on c.instructor_id=u.user_id where e.user_id=?;");
+                                INNER JOIN users as u on c.instructor_id=u.user_id where e.user_id=? and e.is_enrolled=1;");
 $query->bind_param("i", $id);
 
 
